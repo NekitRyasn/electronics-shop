@@ -25,16 +25,6 @@ const db = new Pool({
 });
 
 
-db.query(`
-CREATE TABLE IF NOT EXISTS products (
-  id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  price INTEGER NOT NULL,
-  image TEXT
-);`);
-
-
-
 app.get("/api/products", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM products ORDER BY id DESC");
