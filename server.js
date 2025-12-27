@@ -5,7 +5,15 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+
 app.use(express.static("public"));
+
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
 
 const db = new Pool({
   user: "shopuser",
@@ -15,7 +23,7 @@ const db = new Pool({
   port: 5432
 });
 
-// Создание таблицы, если её нет
+
 db.query(`
 CREATE TABLE IF NOT EXISTS products (
   id SERIAL PRIMARY KEY,
@@ -25,7 +33,7 @@ CREATE TABLE IF NOT EXISTS products (
 );`);
 
 
-// Получить список товаров
+
 app.get("/api/products", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM products ORDER BY id DESC");
@@ -35,7 +43,7 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
-// Добавить товар
+
 app.post("/api/products", async (req, res) => {
   const { name, price, image } = req.body;
   try {
